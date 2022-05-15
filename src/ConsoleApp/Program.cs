@@ -1,12 +1,18 @@
-﻿using System;
+﻿using BLL.Dto;
+using BLL.Services;
+using System;
 
 namespace ConsoleApp
 {
     internal class Program
     {
-        static void Main(string[] args)
+        static void Main()
         {
-            Console.WriteLine("Hello, World!");
+            var inputData = new InputDataDto { CityName = Console.ReadLine() };
+
+            var service = new ForecastService();
+
+            Console.WriteLine(service.GetForecast(inputData));
         }
     }
 }
