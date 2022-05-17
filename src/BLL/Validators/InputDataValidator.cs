@@ -3,7 +3,7 @@ using FluentValidation;
 
 namespace BLL.Validators
 {
-    internal class InputDataValidator : AbstractValidator<InputDataDto>
+    public class InputDataValidator : AbstractValidator<InputDataDto>
     {
         public InputDataValidator()
         {

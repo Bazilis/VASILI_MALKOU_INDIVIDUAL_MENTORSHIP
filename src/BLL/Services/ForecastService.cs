@@ -17,9 +17,7 @@ namespace BLL.Services
 
             if (!validationResult.IsValid)
             {
-                var errors = validationResult.Errors.ToArray();
-
-                return errors[0].ErrorMessage;
+                return validationResult.Errors[0].ErrorMessage;
             }
 
             var url = $"https://api.openweathermap.org/data/2.5/weather?q={inputData.CityName}&units=metric&appid=1767b42a412384f05aa99bce04d20904";
@@ -28,18 +26,19 @@ namespace BLL.Services
 
             try
             {
-                var response = (HttpWebResponse)request.GetResponse();
-
-                string responseStr;
-
-                using (var reader = new StreamReader(response.GetResponseStream()))
+                using (var response = (HttpWebResponse)request.GetResponse())
                 {
-                    responseStr = reader.ReadToEnd();
+                    string responseStr;
+
+                    using (var reader = new StreamReader(response.GetResponseStream()))
+                    {
+                        responseStr = reader.ReadToEnd();
+                    }
+
+                    var apiResponse = JsonConvert.DeserializeObject<ApiResponseDto>(responseStr);
+
+                    return $"In {apiResponse.Name} {apiResponse.Main.Temp} °C. {CommentСhoosing(apiResponse.Main.Temp)}";
                 }
-
-                var apiResponse = JsonConvert.DeserializeObject<ApiResponseDto>(responseStr);
-
-                return $"In {apiResponse.Name} {apiResponse.Main.Temp} °C. {CommentСhoosing(apiResponse.Main.Temp)}";
             }
             catch (WebException ex)
             {
