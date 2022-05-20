@@ -10,9 +10,9 @@ namespace IntegrationTests
         public void GetForecastMethodReturnsValidResult()
         {
             // arrange
-            string expectedRegexPattern = @"In Tashkent(\w*)";
+            string expectedRegexPattern = @"In Minsk(\w*)";
 
-            var inputData = new InputDataDto { CityName = "Tashkent" };
+            var inputData = new InputDataDto { CityName = "Minsk" };
 
             var service = new ForecastService();
 
