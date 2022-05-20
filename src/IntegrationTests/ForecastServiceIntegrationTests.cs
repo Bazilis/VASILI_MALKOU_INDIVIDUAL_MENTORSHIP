@@ -12,7 +12,7 @@ namespace IntegrationTests
             // arrange
             string expectedRegexPattern = @"In Minsk(\w*)";
 
-            var inputData = new InputDataDto { CityName = "Minsk" };
+            var inputData = new InputDataDto { CityName = "Mins" };
 
             var service = new ForecastService();
 
