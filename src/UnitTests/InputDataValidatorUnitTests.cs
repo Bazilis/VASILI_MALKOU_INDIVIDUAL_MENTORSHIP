@@ -34,7 +34,7 @@ namespace UnitTests
             var validationResult = validator.TestValidate(
                 new InputDataDto()
                 {
-                    CityName = ""
+                    CityName = " "
                 });
 
             // assert
