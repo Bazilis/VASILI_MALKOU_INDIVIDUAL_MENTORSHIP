@@ -4,20 +4,20 @@ using Xunit;
 
 namespace IntegrationTests
 {
-    public class ForecastServiceIntegrationTests
+    public class CurrentWeatherServiceIntegrationTests
     {
         [Fact]
-        public void GetForecastMethodReturnsValidResult()
+        public void GetCurrentWeatherMethodReturnsValidResult()
         {
             // arrange
             string expectedRegexPattern = @"In Tashkent(\w*)";
 
             var inputData = new InputDataDto { CityName = "Tashkent" };
 
-            var service = new ForecastService();
+            var service = new CurrentWeatherService();
 
             // act
-            string result = service.GetForecast(inputData);
+            string result = service.GetCurrentWeather(inputData);
 
             // assert
             Assert.Matches(expectedRegexPattern, result);

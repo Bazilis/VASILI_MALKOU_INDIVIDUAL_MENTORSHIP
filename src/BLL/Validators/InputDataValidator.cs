@@ -8,7 +8,11 @@ namespace BLL.Validators
         public InputDataValidator()
         {
             RuleFor(x => x.CityName)
-                    .NotEmpty();
+                .NotEmpty();
+
+            RuleFor(x => x.NumberOfDays)
+                .InclusiveBetween(1, 16)
+                .NotEmpty();
         }
     }
 }

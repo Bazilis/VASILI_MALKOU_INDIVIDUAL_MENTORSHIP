@@ -1,5 +1,5 @@
-﻿using BLL.Dto;
-using BLL.Services;
+﻿using BLL.Services;
+using ConsoleApp.Command;
 using System;
 
 namespace ConsoleApp
@@ -8,11 +8,19 @@ namespace ConsoleApp
     {
         static void Main()
         {
-            var inputData = new InputDataDto { CityName = Console.ReadLine() };
+            //var currentWeatherCommand = 
+            //    new CurrentWeatherCommand(
+            //    new CurrentWeatherService());
 
-            var service = new ForecastService();
+            //currentWeatherCommand.Execute();
 
-            Console.WriteLine(service.GetForecast(inputData));
+            var weatherForecastCommand =
+                new WeatherForecastCommand(
+                new WeatherForecastService());
+
+            weatherForecastCommand.Execute();
+
+            Console.Read();
         }
     }
 }

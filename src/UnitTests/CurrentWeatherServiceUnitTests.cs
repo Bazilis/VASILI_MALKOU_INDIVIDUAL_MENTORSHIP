@@ -4,20 +4,20 @@ using Xunit;
 
 namespace UnitTests
 {
-    public class ForecastServiceUnitTests
+    public class CurrentWeatherServiceUnitTests
     {
         [Fact]
-        public void GetForecastMethodReturnsValidationErrorMessage()
+        public void GetCurrentWeatherMethodReturnsValidationErrorMessage()
         {
             // arrange
             string errorMessage = "'City Name' must not be empty.";
 
             var inputData = new InputDataDto { CityName = "" };
 
-            var service = new ForecastService();
+            var service = new CurrentWeatherService();
 
             // act
-            var result = service.GetForecast(inputData);
+            var result = service.GetCurrentWeather(inputData);
 
             // assert
             Assert.Equal(errorMessage, result);

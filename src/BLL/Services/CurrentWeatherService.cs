@@ -7,9 +7,9 @@ using System.Net;
 
 namespace BLL.Services
 {
-    public class ForecastService
+    public class CurrentWeatherService
     {
-        public string GetForecast(InputDataDto inputData)
+        public string GetCurrentWeather(InputDataDto inputData)
         {
             var inputDataValidator = new InputDataValidator();
 
@@ -35,7 +35,7 @@ namespace BLL.Services
                         responseStr = reader.ReadToEnd();
                     }
 
-                    var apiResponse = JsonConvert.DeserializeObject<ApiResponseDto>(responseStr);
+                    var apiResponse = JsonConvert.DeserializeObject<CurrentWeatherApiResponseDto>(responseStr);
 
                     return $"In {apiResponse.Name} {apiResponse.Main.Temp} °C. {CommentСhoosing(apiResponse.Main.Temp)}";
                 }
