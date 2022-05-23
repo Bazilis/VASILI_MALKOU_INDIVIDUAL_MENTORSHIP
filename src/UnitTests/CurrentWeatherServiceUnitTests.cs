@@ -12,7 +12,7 @@ namespace UnitTests
             // arrange
             string errorMessage = "'City Name' must not be empty.";
 
-            var inputData = new InputDataDto { CityName = "" };
+            var inputData = new CurrentWeatherInputDataDto { CityName = "" };
 
             var service = new CurrentWeatherService();
 

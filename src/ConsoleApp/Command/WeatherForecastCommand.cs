@@ -15,7 +15,7 @@ namespace ConsoleApp.Command
 
         public void Execute()
         {
-            var inputData = new InputDataDto 
+            var inputData = new WeatherForecastInputDataDto 
             {
                 CityName = Console.ReadLine(), 
                 NumberOfDays = Convert.ToInt32(Console.ReadLine()) 

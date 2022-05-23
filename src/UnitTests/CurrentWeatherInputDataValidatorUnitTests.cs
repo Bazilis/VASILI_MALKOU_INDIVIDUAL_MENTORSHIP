@@ -5,17 +5,17 @@ using Xunit;
 
 namespace UnitTests
 {
-    public class InputDataValidatorUnitTests
+    public class CurrentWeatherInputDataValidatorUnitTests
     {
         [Fact]
         public void InputDataValidatorHaveNoValidationError()
         {
             // arrange
-            var validator = new InputDataValidator();
+            var validator = new CurrentWeatherInputDataValidator();
 
             // act
             var validationResult = validator.TestValidate(
-                new InputDataDto()
+                new CurrentWeatherInputDataDto()
                 {
                     CityName = "Tashkent"
                 });
@@ -28,11 +28,11 @@ namespace UnitTests
         public void InputDataValidatorHaveValidationError()
         {
             // arrange
-            var validator = new InputDataValidator();
+            var validator = new CurrentWeatherInputDataValidator();
 
             // act
             var validationResult = validator.TestValidate(
-                new InputDataDto()
+                new CurrentWeatherInputDataDto()
                 {
                     CityName = ""
                 });

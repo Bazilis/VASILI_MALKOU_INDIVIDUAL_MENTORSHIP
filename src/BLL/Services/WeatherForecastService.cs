@@ -10,9 +10,9 @@ namespace BLL.Services
 {
     public class WeatherForecastService
     {
-        public string GetWeatherForecast(InputDataDto inputData)
+        public string GetWeatherForecast(WeatherForecastInputDataDto inputData)
         {
-            var inputDataValidator = new InputDataValidator();
+            var inputDataValidator = new WeatherForecastInputDataValidator();
 
             ValidationResult validationResult = inputDataValidator.Validate(inputData);
 

@@ -15,7 +15,7 @@ namespace ConsoleApp.Command
 
         public void Execute()
         {
-            var inputData = new InputDataDto { CityName = Console.ReadLine() };
+            var inputData = new CurrentWeatherInputDataDto { CityName = Console.ReadLine() };
 
             Console.WriteLine(_service.GetCurrentWeather(inputData));
         }

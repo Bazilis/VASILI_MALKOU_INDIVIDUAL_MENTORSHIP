@@ -9,9 +9,9 @@ namespace BLL.Services
 {
     public class CurrentWeatherService
     {
-        public string GetCurrentWeather(InputDataDto inputData)
+        public string GetCurrentWeather(CurrentWeatherInputDataDto inputData)
         {
-            var inputDataValidator = new InputDataValidator();
+            var inputDataValidator = new CurrentWeatherInputDataValidator();
 
             ValidationResult validationResult = inputDataValidator.Validate(inputData);
 

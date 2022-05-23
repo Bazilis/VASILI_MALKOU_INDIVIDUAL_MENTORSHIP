@@ -1,9 +1,7 @@
 ﻿namespace BLL.Dto
 {
-    public class InputDataDto
+    public class CurrentWeatherInputDataDto
     {
         public string CityName { get; set; }
-
-        public int NumberOfDays { get; set; }
     }
 }

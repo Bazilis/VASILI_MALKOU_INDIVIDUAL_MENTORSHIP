@@ -3,9 +3,9 @@ using FluentValidation;
 
 namespace BLL.Validators
 {
-    public class InputDataValidator : AbstractValidator<InputDataDto>
+    public class WeatherForecastInputDataValidator : AbstractValidator<WeatherForecastInputDataDto>
     {
-        public InputDataValidator()
+        public WeatherForecastInputDataValidator()
         {
             RuleFor(x => x.CityName)
                 .NotEmpty();
