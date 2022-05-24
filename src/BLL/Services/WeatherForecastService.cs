@@ -2,7 +2,6 @@
 using BLL.Validators;
 using FluentValidation.Results;
 using Newtonsoft.Json;
-using System;
 using System.IO;
 using System.Net;
 
@@ -12,13 +11,13 @@ namespace BLL.Services
     {
         public string GetWeatherForecast(WeatherForecastInputDataDto inputData)
         {
-            var inputDataValidator = new WeatherForecastInputDataValidator();
+            var inputDataValidator = new WeatherForecastInputDataValidator(inputData.MinNumberDays, inputData.MaxNumberDays);
 
             ValidationResult validationResult = inputDataValidator.Validate(inputData);
 
             if (!validationResult.IsValid)
             {
-                string errorMessage = String.Empty;
+                string errorMessage = string.Empty;
 
                 foreach(var failure in validationResult.Errors)
                 {
