@@ -2,7 +2,7 @@
 using BLL.Services;
 using Xunit;
 
-namespace UnitTests
+namespace UnitTests.ServicesUnitTests
 {
     public class CurrentWeatherServiceUnitTests
     {

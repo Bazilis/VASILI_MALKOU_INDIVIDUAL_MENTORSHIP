@@ -3,12 +3,12 @@ using BLL.Validators;
 using FluentValidation.TestHelper;
 using Xunit;
 
-namespace UnitTests
+namespace UnitTests.ValidatorsUnitTests
 {
     public class CurrentWeatherInputDataValidatorUnitTests
     {
         [Fact]
-        public void InputDataValidatorHaveNoValidationError()
+        public void CurrentWeatherInputDataValidatorHaveNoValidationError()
         {
             // arrange
             var validator = new CurrentWeatherInputDataValidator();
@@ -25,7 +25,7 @@ namespace UnitTests
         }
 
         [Fact]
-        public void InputDataValidatorHaveValidationError()
+        public void CurrentWeatherInputDataValidatorHaveValidationError()
         {
             // arrange
             var validator = new CurrentWeatherInputDataValidator();

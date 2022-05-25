@@ -6,7 +6,7 @@ using System.IO;
 
 namespace ConsoleApp.Command
 {
-    internal class WeatherForecastCommand
+    internal class WeatherForecastCommand : ICommand
     {
         private readonly IConfigurationRoot _configuration;
 
@@ -35,7 +35,7 @@ namespace ConsoleApp.Command
             Console.WriteLine("\nPlease, enter City Name and press 'Enter'...");
             inputData.CityName = Console.ReadLine();
 
-            Console.WriteLine("Please, enter number of days and press 'Enter'...");
+            Console.WriteLine("Please, enter number of forecast days and press 'Enter'...");
             inputData.NumberOfDays = Convert.ToInt32(Console.ReadLine());
 
             Console.WriteLine(_service.GetWeatherForecast(inputData));

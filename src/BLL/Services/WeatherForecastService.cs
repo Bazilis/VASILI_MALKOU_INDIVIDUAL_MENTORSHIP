@@ -11,7 +11,7 @@ namespace BLL.Services
     {
         public string GetWeatherForecast(WeatherForecastInputDataDto inputData)
         {
-            var inputDataValidator = new WeatherForecastInputDataValidator(inputData.MinNumberDays, inputData.MaxNumberDays);
+            var inputDataValidator = new WeatherForecastInputDataValidator();
 
             ValidationResult validationResult = inputDataValidator.Validate(inputData);
 
@@ -21,7 +21,10 @@ namespace BLL.Services
 
                 foreach(var failure in validationResult.Errors)
                 {
-                    errorMessage += $"{failure.ErrorMessage}\n";
+                    if (validationResult.Errors.Count == 1)
+                        errorMessage = failure.ErrorMessage;
+                    else
+                        errorMessage += $"{failure.ErrorMessage}\n";
                 }
 
                 return errorMessage;
@@ -78,7 +81,10 @@ namespace BLL.Services
 
                     foreach(var tempInfo in apiResponse.List)
                     {
-                        resultString += $"Day {dayNumber}: {tempInfo.Temp.Day} °C. {CommentСhoosing(tempInfo.Temp.Day)}\n";
+                        if (apiResponse.List[apiResponse.List.Length - 1] == tempInfo)
+                            resultString += $"Day {dayNumber}: {tempInfo.Temp.Day} °C. {CommentСhoosing(tempInfo.Temp.Day)}";
+                        else
+                            resultString += $"Day {dayNumber}: {tempInfo.Temp.Day} °C. {CommentСhoosing(tempInfo.Temp.Day)}\n";
 
                         dayNumber++;
                     }

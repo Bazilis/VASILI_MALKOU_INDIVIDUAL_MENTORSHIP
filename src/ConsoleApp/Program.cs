@@ -1,5 +1,6 @@
 ﻿using BLL.Services;
 using ConsoleApp.Command;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 
 namespace ConsoleApp
@@ -10,6 +11,13 @@ namespace ConsoleApp
         {
             Console.Title = "Openweathermap.org API";
             Console.ForegroundColor = ConsoleColor.Green;
+
+            var services = new ServiceCollection()
+                .AddScoped<CurrentWeatherCommand, CurrentWeatherCommand>()
+                .AddScoped<WeatherForecastCommand, WeatherForecastCommand>()
+                .AddScoped<CurrentWeatherService, CurrentWeatherService>()
+                .AddScoped<WeatherForecastService, WeatherForecastService>()
+                .BuildServiceProvider();
 
             ConsoleKey key;
             bool exit = false;
@@ -22,30 +30,32 @@ namespace ConsoleApp
                 Console.WriteLine("0 => Close application");
 
                 key = Console.ReadKey().Key;
+
                 switch (key)
                 {
                     case ConsoleKey.D1:
 
-                        var currentWeatherCommand =
-                            new CurrentWeatherCommand(
-                            new CurrentWeatherService());
+                        var currentWeatherCommand = services
+                            .GetRequiredService<CurrentWeatherCommand>();
                         currentWeatherCommand.Execute();
 
                         break;
 
                     case ConsoleKey.D2:
 
-                        var weatherForecastCommand =
-                            new WeatherForecastCommand(
-                            new WeatherForecastService());
+                        var weatherForecastCommand = services
+                            .GetRequiredService<WeatherForecastCommand>();
                         weatherForecastCommand.Execute();
 
                         break;
 
                     case ConsoleKey.D0:
-                        Console.WriteLine("\nExit");
+
+                        Console.WriteLine("\nApplication closed...");
                         exit = true;
+
                         break;
+
                     default:
                         Console.WriteLine("\nInvalid key, try another...");
                         break;
