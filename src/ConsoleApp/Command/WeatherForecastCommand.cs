@@ -28,11 +28,15 @@ namespace ConsoleApp.Command
         {
             var inputData = new WeatherForecastInputDataDto 
             {
-                CityName = Console.ReadLine(), 
-                NumberOfDays = Convert.ToInt32(Console.ReadLine()),
                 MinNumberDays = Convert.ToInt32(_configuration["MinNumberDays"]),
-                MaxNumberDays = Convert.ToInt32(_configuration["MaxNumberDays"]),
+                MaxNumberDays = Convert.ToInt32(_configuration["MaxNumberDays"])
             };
+
+            Console.WriteLine("\nPlease, enter City Name and press 'Enter'...");
+            inputData.CityName = Console.ReadLine();
+
+            Console.WriteLine("Please, enter number of days and press 'Enter'...");
+            inputData.NumberOfDays = Convert.ToInt32(Console.ReadLine());
 
             Console.WriteLine(_service.GetWeatherForecast(inputData));
         }

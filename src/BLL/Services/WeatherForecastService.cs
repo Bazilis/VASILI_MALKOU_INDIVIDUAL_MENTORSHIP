@@ -27,7 +27,7 @@ namespace BLL.Services
                 return errorMessage;
             }
 
-            var url = $"http://api.openweathermap.org/geo/1.0/direct?q={inputData.CityName}&appid=1767b42a412384f05aa99bce04d20904";
+            var url = $"https://api.openweathermap.org/data/2.5/weather?q={inputData.CityName}&appid=1767b42a412384f05aa99bce04d20904";
 
             var request = (HttpWebRequest)WebRequest.Create(url);
 
@@ -42,9 +42,9 @@ namespace BLL.Services
                         responseStr = reader.ReadToEnd();
                     }
 
-                    var apiResponse = JsonConvert.DeserializeObject<DirectGeocodingApiResponseDto[]>(responseStr);
+                    var apiResponse = JsonConvert.DeserializeObject<CurrentWeatherApiResponseDto>(responseStr);
 
-                    return GetWeatherForecastByCityCoordinates(apiResponse[0].Lat, apiResponse[0].Lon, inputData.NumberOfDays);
+                    return GetWeatherForecastByCityCoordinates(apiResponse.Coord.Lat, apiResponse.Coord.Lon, inputData.NumberOfDays);
                 }
             }
             catch (WebException ex)

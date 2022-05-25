@@ -8,12 +8,19 @@ namespace ConsoleApp
     {
         static void Main()
         {
-            ConsoleKey key;
+            Console.Title = "Openweathermap.org API";
+            Console.ForegroundColor = ConsoleColor.Green;
 
+            ConsoleKey key;
             bool exit = false;
 
             while (!exit)
             {
+                Console.WriteLine("Please, enter the number of menu item:");
+                Console.WriteLine("1 => Current weather");
+                Console.WriteLine("2 => Weather forecast");
+                Console.WriteLine("0 => Close application");
+
                 key = Console.ReadKey().Key;
                 switch (key)
                 {
@@ -34,17 +41,16 @@ namespace ConsoleApp
                         weatherForecastCommand.Execute();
 
                         break;
+
                     case ConsoleKey.D0:
                         Console.WriteLine("\nExit");
                         exit = true;
                         break;
                     default:
-                        Console.WriteLine("Invalid key, try another...");
+                        Console.WriteLine("\nInvalid key, try another...");
                         break;
                 }
             }
-
-            Console.Read();
         }
     }
 }
