@@ -13,10 +13,10 @@ namespace ConsoleApp
             Console.ForegroundColor = ConsoleColor.Green;
 
             var services = new ServiceCollection()
-                .AddScoped<CurrentWeatherCommand, CurrentWeatherCommand>()
-                .AddScoped<WeatherForecastCommand, WeatherForecastCommand>()
-                .AddScoped<CurrentWeatherService, CurrentWeatherService>()
-                .AddScoped<WeatherForecastService, WeatherForecastService>()
+                .AddScoped<CurrentWeatherCommand>()
+                .AddScoped<WeatherForecastCommand>()
+                .AddScoped<CurrentWeatherService>()
+                .AddScoped<WeatherForecastService>()
                 .BuildServiceProvider();
 
             ConsoleKey key;
