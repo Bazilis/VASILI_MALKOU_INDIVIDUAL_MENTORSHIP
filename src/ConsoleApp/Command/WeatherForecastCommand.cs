@@ -1,5 +1,5 @@
 ﻿using BLL.Dto;
-using BLL.Services;
+using BLL.Interfaces;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.IO;
@@ -10,9 +10,9 @@ namespace ConsoleApp.Command
     {
         private readonly IConfigurationRoot _configuration;
 
-        private readonly WeatherForecastService _service;
+        private readonly IWeatherForecast _service;
 
-        public WeatherForecastCommand(WeatherForecastService service)
+        public WeatherForecastCommand(IWeatherForecast service)
         {
             string basePath = Directory.GetParent(Directory.GetParent(Directory.GetParent(Directory.GetCurrentDirectory()).FullName).FullName).FullName;
 

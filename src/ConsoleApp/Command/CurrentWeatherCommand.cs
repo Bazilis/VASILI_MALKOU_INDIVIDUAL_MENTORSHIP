@@ -1,14 +1,14 @@
 ﻿using BLL.Dto;
-using BLL.Services;
+using BLL.Interfaces;
 using System;
 
 namespace ConsoleApp.Command
 {
     internal class CurrentWeatherCommand : ICommand
     {
-        private readonly CurrentWeatherService _service;
+        private readonly ICurrentWeather _service;
 
-        public CurrentWeatherCommand(CurrentWeatherService service)
+        public CurrentWeatherCommand(ICurrentWeather service)
         {
             _service = service;
         }

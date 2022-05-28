@@ -1,7 +1,9 @@
-﻿using BLL.Services;
+﻿using BLL.Interfaces;
+using BLL.Services;
 using ConsoleApp.Command;
 using Microsoft.Extensions.DependencyInjection;
 using System;
+using System.Linq;
 
 namespace ConsoleApp
 {
@@ -13,15 +15,17 @@ namespace ConsoleApp
             Console.ForegroundColor = ConsoleColor.Green;
 
             var services = new ServiceCollection()
-                .AddScoped<CurrentWeatherCommand>()
-                .AddScoped<WeatherForecastCommand>()
-                .AddScoped<CurrentWeatherService>()
-                .AddScoped<WeatherForecastService>()
+                .AddScoped<ICommand, CurrentWeatherCommand> ()
+                .AddScoped<ICommand, WeatherForecastCommand>()
+                .AddScoped<ICurrentWeather ,CurrentWeatherService>()
+                .AddScoped<IWeatherForecast, WeatherForecastService>()
                 .BuildServiceProvider();
+
+            var commands = services.GetServices<ICommand>();
 
             ConsoleKey key;
             bool exit = false;
-
+            
             while (!exit)
             {
                 Console.WriteLine("Please, enter the number of menu item:");
@@ -35,16 +39,16 @@ namespace ConsoleApp
                 {
                     case ConsoleKey.D1:
 
-                        var currentWeatherCommand = services
-                            .GetRequiredService<CurrentWeatherCommand>();
+                        var currentWeatherCommand = commands
+                            .First(c => c.GetType().Name == nameof(CurrentWeatherCommand));
                         currentWeatherCommand.Execute();
 
                         break;
 
                     case ConsoleKey.D2:
 
-                        var weatherForecastCommand = services
-                            .GetRequiredService<WeatherForecastCommand>();
+                        var weatherForecastCommand = commands
+                            .First(c => c.GetType().Name == nameof(WeatherForecastCommand));
                         weatherForecastCommand.Execute();
 
                         break;

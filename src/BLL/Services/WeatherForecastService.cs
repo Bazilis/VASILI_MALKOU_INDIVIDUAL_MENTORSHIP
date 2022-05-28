@@ -1,4 +1,5 @@
 ﻿using BLL.Dto;
+using BLL.Interfaces;
 using BLL.Validators;
 using FluentValidation.Results;
 using Newtonsoft.Json;
@@ -8,7 +9,7 @@ using System.Net;
 
 namespace BLL.Services
 {
-    public class WeatherForecastService
+    public class WeatherForecastService : IWeatherForecast
     {
         public string GetWeatherForecast(WeatherForecastInputDataDto inputData)
         {
