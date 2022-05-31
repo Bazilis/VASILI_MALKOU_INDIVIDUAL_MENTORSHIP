@@ -1,6 +1,9 @@
-﻿using BLL.Dto;
+﻿using BLL.Interfaces;
 using BLL.Services;
+using ConsoleApp.Command;
+using Microsoft.Extensions.DependencyInjection;
 using System;
+using System.Linq;
 
 namespace ConsoleApp
 {
@@ -8,11 +11,60 @@ namespace ConsoleApp
     {
         static void Main()
         {
-            var inputData = new InputDataDto { CityName = Console.ReadLine() };
+            Console.Title = "Openweathermap.org API";
+            Console.ForegroundColor = ConsoleColor.Green;
 
-            var service = new ForecastService();
+            var services = new ServiceCollection()
+                .AddScoped<ICommand, CurrentWeatherCommand> ()
+                .AddScoped<ICommand, WeatherForecastCommand>()
+                .AddScoped<ICurrentWeather ,CurrentWeatherService>()
+                .AddScoped<IWeatherForecast, WeatherForecastService>()
+                .BuildServiceProvider();
 
-            Console.WriteLine(service.GetForecast(inputData));
+            var commands = services.GetServices<ICommand>();
+
+            ConsoleKey key;
+            bool exit = false;
+            
+            while (!exit)
+            {
+                Console.WriteLine("Please, enter the number of menu item:");
+                Console.WriteLine("1 => Current weather");
+                Console.WriteLine("2 => Weather forecast");
+                Console.WriteLine("0 => Close application");
+
+                key = Console.ReadKey().Key;
+
+                switch (key)
+                {
+                    case ConsoleKey.D1:
+
+                        var currentWeatherCommand = commands
+                            .First(c => c.GetType().Name == nameof(CurrentWeatherCommand));
+                        currentWeatherCommand.Execute();
+
+                        break;
+
+                    case ConsoleKey.D2:
+
+                        var weatherForecastCommand = commands
+                            .First(c => c.GetType().Name == nameof(WeatherForecastCommand));
+                        weatherForecastCommand.Execute();
+
+                        break;
+
+                    case ConsoleKey.D0:
+
+                        Console.WriteLine("\nApplication closed...");
+                        exit = true;
+
+                        break;
+
+                    default:
+                        Console.WriteLine("\nInvalid key, try another...");
+                        break;
+                }
+            }
         }
     }
 }

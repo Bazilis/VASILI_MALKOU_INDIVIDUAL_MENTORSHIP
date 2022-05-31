@@ -3,19 +3,19 @@ using BLL.Validators;
 using FluentValidation.TestHelper;
 using Xunit;
 
-namespace UnitTests
+namespace UnitTests.ValidatorsUnitTests
 {
-    public class InputDataValidatorUnitTests
+    public class CurrentWeatherInputDataValidatorUnitTests
     {
         [Fact]
-        public void InputDataValidatorHaveNoValidationError()
+        public void CurrentWeatherInputDataValidatorHaveNoValidationError()
         {
             // arrange
-            var validator = new InputDataValidator();
+            var validator = new CurrentWeatherInputDataValidator();
 
             // act
             var validationResult = validator.TestValidate(
-                new InputDataDto()
+                new CurrentWeatherInputDataDto()
                 {
                     CityName = "Tashkent"
                 });
@@ -25,14 +25,14 @@ namespace UnitTests
         }
 
         [Fact]
-        public void InputDataValidatorHaveValidationError()
+        public void CurrentWeatherInputDataValidatorHaveValidationError()
         {
             // arrange
-            var validator = new InputDataValidator();
+            var validator = new CurrentWeatherInputDataValidator();
 
             // act
             var validationResult = validator.TestValidate(
-                new InputDataDto()
+                new CurrentWeatherInputDataDto()
                 {
                     CityName = ""
                 });
