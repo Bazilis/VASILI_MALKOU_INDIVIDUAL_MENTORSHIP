@@ -2,25 +2,17 @@
 using BLL.Interfaces;
 using Microsoft.Extensions.Configuration;
 using System;
-using System.IO;
 
 namespace ConsoleApp.Command
 {
     internal class WeatherForecastCommand : ICommand
     {
         private readonly IConfigurationRoot _configuration;
-
         private readonly IWeatherForecast _service;
 
-        public WeatherForecastCommand(IWeatherForecast service)
+        public WeatherForecastCommand(IConfigurationRoot configuration, IWeatherForecast service)
         {
-            string basePath = Directory.GetParent(Directory.GetParent(Directory.GetParent(Directory.GetCurrentDirectory()).FullName).FullName).FullName;
-
-            _configuration = new ConfigurationBuilder()
-                .SetBasePath(basePath)
-                .AddJsonFile("appconfig.json", optional: false, reloadOnChange: true)
-                .Build();
-
+            _configuration = configuration;
             _service = service;
         }
 
