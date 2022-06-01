@@ -53,7 +53,7 @@ namespace ConsoleApp
                     case ConsoleKey.D1:
 
                         var currentWeatherCommand = commands
-                            .First(c => c.GetType().Name == nameof(CurrentWeatherCommand));
+                            .First(c => c.GetType() == typeof(CurrentWeatherCommand));
                         currentWeatherCommand.Execute();
 
                         break;
@@ -61,7 +61,7 @@ namespace ConsoleApp
                     case ConsoleKey.D2:
 
                         var weatherForecastCommand = commands
-                            .First(c => c.GetType().Name == nameof(WeatherForecastCommand));
+                            .First(c => c.GetType() == typeof(WeatherForecastCommand));
                         weatherForecastCommand.Execute();
 
                         break;
@@ -69,7 +69,7 @@ namespace ConsoleApp
                     case ConsoleKey.D3:
 
                         var findCityWithMaxTempCommand = commands
-                            .First(c => c.GetType().Name == nameof(FindCityWithMaxTempCommand));
+                            .First(c => c.GetType() == typeof(FindCityWithMaxTempCommand));
                         findCityWithMaxTempCommand.Execute();
 
                         break;
