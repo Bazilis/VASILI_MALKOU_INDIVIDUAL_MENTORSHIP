@@ -4,6 +4,6 @@ namespace BLL.Interfaces
 {
     public interface IFindCityWithMaxTemp
     {
-        public string FindCityWithMaxTemp(FindCityWithMaxTempInputDataDto inputData);
+        string FindCityWithMaxTemp(FindCityWithMaxTempInputDataDto inputData);
     }
 }

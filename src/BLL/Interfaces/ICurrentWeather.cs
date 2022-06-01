@@ -4,6 +4,6 @@ namespace BLL.Interfaces
 {
     public interface ICurrentWeather
     {
-        public string GetCurrentWeather(CurrentWeatherInputDataDto inputData);
+        string GetCurrentWeather(CurrentWeatherInputDataDto inputData);
     }
 }
