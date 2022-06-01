@@ -1,4 +1,5 @@
 {
   "MinNumberDays": 1,
-  "MaxNumberDays": 16
+  "MaxNumberDays": 16,
+  "IsStatisticsOutputEnable": true
 }
