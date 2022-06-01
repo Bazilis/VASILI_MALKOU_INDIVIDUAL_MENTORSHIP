@@ -5,5 +5,7 @@
         public string Cities { get; set; }
 
         public bool IsStatisticsOutputEnable { get; set; }
+
+        public double ResponseTimeout { get; set; }
     }
 }

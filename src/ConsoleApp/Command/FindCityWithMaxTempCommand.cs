@@ -20,7 +20,8 @@ namespace ConsoleApp.Command
         {
             var inputData = new FindCityWithMaxTempInputDataDto
             {
-                IsStatisticsOutputEnable = Convert.ToBoolean(_configuration["IsStatisticsOutputEnable"])
+                IsStatisticsOutputEnable = Convert.ToBoolean(_configuration["IsStatisticsOutputEnable"]),
+                ResponseTimeout = Convert.ToDouble(_configuration["ResponseTimeout"])
             };
 
             Console.WriteLine("\nPlease, enter cities names splitted by comma and press 'Enter'...");
