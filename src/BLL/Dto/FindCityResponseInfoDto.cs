@@ -8,8 +8,15 @@
 
         public double ResponseTimeMs { get; set; }
 
-        public bool Success { get; set; }
+        public ResponseState ResponseState { get; set; }
 
         public string ErrorMessage { get; set; }
+    }
+
+    public enum ResponseState
+    {
+        Successful,
+        Failed,
+        Canceled
     }
 }

@@ -1,5 +1,6 @@
 {
   "MinNumberDays": 1,
   "MaxNumberDays": 16,
-  "IsStatisticsOutputEnable": true
+  "IsStatisticsOutputEnable": true,
+  "ResponseTimeout": 6005e-1 //response timeout in milliseconds
 }

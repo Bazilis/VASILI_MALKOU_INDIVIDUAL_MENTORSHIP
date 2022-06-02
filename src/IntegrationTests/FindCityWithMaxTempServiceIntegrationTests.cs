@@ -31,7 +31,7 @@ namespace IntegrationTests
         public void FindCityWithMaxTempStatisticsEnableErrorMessageMethodReturnsValidResult()
         {
             // arrange
-            string expectedRegexPattern = @"(?s)City:(.*)Error, no successful requests.(\w*)";
+            string expectedRegexPattern = @"(?s)City:(.*)No successful requests.(\w*)";
 
             var inputData = new FindCityWithMaxTempInputDataDto
             {
@@ -73,7 +73,7 @@ namespace IntegrationTests
         public void FindCityWithMaxTempStatisticsDisableErrorMessageMethodReturnsValidResult()
         {
             // arrange
-            string expectedRegexPattern = "Error, no successful requests." + @"(\w*)";
+            string expectedRegexPattern = "No successful requests." + @"(\w*)";
 
             var inputData = new FindCityWithMaxTempInputDataDto
             {
