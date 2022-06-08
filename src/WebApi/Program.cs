@@ -1,49 +1,51 @@
-using BLL.Interfaces;
-using BLL.Services;
-using BLL.Validators;
-using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.Extensions.DependencyInjection;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
+using Serilog;
+using Serilog.Events;
+using System;
+using System.IO;
+using System.Reflection;
 
 namespace WebApi
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static int Main(string[] args)
         {
-            var builder = WebApplication.CreateBuilder(args);
+            var logFileName = $"Log_{Assembly.GetExecutingAssembly().GetName().Name}.txt";
+            var logFilePath = Path.Combine(AppContext.BaseDirectory, logFileName);
 
-            builder.Services.AddControllers();
+            Log.Logger = new LoggerConfiguration()
+                .MinimumLevel.Override("Microsoft", LogEventLevel.Information)
+                .Enrich.FromLogContext()
+                .WriteTo.Debug()
+                .WriteTo.File(logFilePath, rollingInterval: RollingInterval.Infinite)
+                .CreateLogger();
 
-            builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddSwaggerGen();
-
-            builder.Services.AddFluentValidation(fv =>
+            try
             {
-                fv.RegisterValidatorsFromAssemblyContaining<CurrentWeatherInputDataValidator>();
-                fv.AutomaticValidationEnabled = false;
-            });
-
-            builder.Services.AddScoped<ICurrentWeather, CurrentWeatherService>();
-            builder.Services.AddScoped<IWeatherForecast, WeatherForecastService>();
-
-            var app = builder.Build();
-
-            // Configure the HTTP request pipeline.
-            if (app.Environment.IsDevelopment())
-            {
-                app.UseSwagger();
-                app.UseSwaggerUI();
+                Log.Information("Starting web host");
+                CreateHostBuilder(args).Build().Run();
+                return 0;
             }
-
-            app.UseHttpsRedirection();
-
-            app.UseAuthorization();
-
-            app.MapControllers();
-
-            app.Run();
+            catch (Exception ex)
+            {
+                Log.Fatal(ex, "Host terminated unexpectedly");
+                return 1;
+            }
+            finally
+            {
+                Log.CloseAndFlush();
+            }
         }
+
+        public static IHostBuilder CreateHostBuilder(string[] args) =>
+            Host.CreateDefaultBuilder(args)
+                .UseSerilog()
+                .ConfigureWebHostDefaults(webBuilder =>
+                {
+                    webBuilder.UseStartup<Startup>();
+                });
     }
 }
