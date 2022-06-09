@@ -19,11 +19,12 @@ namespace BLL.Services
 
         private readonly AppDbContext _context;
 
-        private readonly ILogger _log = Log.ForContext<WeatherHistoryService>();
+        private readonly ILogger _logger;
 
-        public WeatherHistoryService(AppDbContext context)
+        public WeatherHistoryService(AppDbContext context, ILogger logger)
         {
             _context = context;
+            _logger = logger;
         }
 
         public void ManageHangfireJobs(WeatherHistoryOptions inputData)
@@ -33,14 +34,14 @@ namespace BLL.Services
                 if (inputData.CityTimers.All(x => x.TimerCronTemplate == inputData.CityTimers[0].TimerCronTemplate))
                 {
                     RecurringJob.AddOrUpdate($"Job for all cities", () => JobForAllCities(inputData.CityTimers), $"{inputData.CityTimers[0].TimerCronTemplate}");
-                    _log.Information("Job for all cities created");
+                    _logger.Information("Job for all cities created");
                 }
                 else
                 {
                     for (int i = 0; i < inputData.CityTimers.Length; i++)
                     {
                         RecurringJob.AddOrUpdate($"Job for city number {i + 1}", () => JobForOneCity(inputData.CityTimers[i].CityName), $"{inputData.CityTimers[i].TimerCronTemplate}");
-                        _log.Information($"Job for city number {i + 1} created");
+                        _logger.Information($"Job for city number {i + 1} created");
                     }
                 }
 

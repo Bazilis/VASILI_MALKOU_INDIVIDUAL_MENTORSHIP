@@ -16,6 +16,8 @@ using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
 using Serilog;
 using System;
+using System.IO;
+using System.Reflection;
 
 namespace WebApi
 {
@@ -31,7 +33,19 @@ namespace WebApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddLogging(loggingBuilder => loggingBuilder.AddSerilog());
+            var logFileName = $"Log_{Assembly.GetExecutingAssembly().GetName().Name}.txt";
+            var logFilePath = Path.Combine(AppContext.BaseDirectory, logFileName);
+
+            var logger = new LoggerConfiguration()
+                .ReadFrom.Configuration(Configuration)
+                .Enrich.FromLogContext()
+                .WriteTo.Debug()
+                .WriteTo.File(logFilePath, rollingInterval: RollingInterval.Infinite)
+                .CreateLogger();
+
+            services.AddLogging(loggingBuilder => loggingBuilder.AddSerilog(logger));
+
+            services.AddSingleton(Log.Logger);
 
             services.AddControllers();
             services.AddSwaggerGen(c =>
