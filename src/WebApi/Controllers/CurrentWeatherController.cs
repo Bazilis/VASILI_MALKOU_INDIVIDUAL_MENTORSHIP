@@ -5,8 +5,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace WebApi.Controllers
 {
-    [Route("api/[controller]")]
     [ApiController]
+    [Route("api/[controller]")]
     public class CurrentWeatherController : ControllerBase
     {
         private readonly ICurrentWeather _currentWeatherService;
@@ -25,8 +25,8 @@ namespace WebApi.Controllers
 
             var validationResult = _currentWeatherValidator.Validate(inputData);
 
-            if (!ModelState.IsValid)
-                return Ok(validationResult.Errors);
+            if (!validationResult.IsValid)
+                return BadRequest(validationResult.Errors);
 
             return Ok(_currentWeatherService.GetCurrentWeather(inputData));
         }

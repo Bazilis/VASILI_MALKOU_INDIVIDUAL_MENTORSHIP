@@ -2,7 +2,7 @@
 
 namespace BLL.Interfaces
 {
-    public interface IWeatherHistory
+    public interface IWeatherHistorySaver
     {
         void ManageHangfireJobs(WeatherHistoryOptions inputData);
     }

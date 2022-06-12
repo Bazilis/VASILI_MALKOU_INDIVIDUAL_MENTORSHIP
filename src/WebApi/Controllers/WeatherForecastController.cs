@@ -35,8 +35,8 @@ namespace WebApi.Controllers
 
             var validationResult = _weatherForecastValidator.Validate(inputData);
 
-            if (!ModelState.IsValid)
-                return Ok(validationResult.Errors);
+            if (!validationResult.IsValid)
+                return BadRequest(validationResult.Errors);
 
             return Ok(_weatherForecastService.GetWeatherForecast(inputData));
         }
