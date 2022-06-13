@@ -13,7 +13,7 @@ using System.Net;
 
 namespace BLL.Services
 {
-    public class WeatherHistoryService : IWeatherHistory
+    public class WeatherHistorySaverService : IWeatherHistorySaver
     {
         private bool _isSecondCall;
 
@@ -21,7 +21,7 @@ namespace BLL.Services
 
         private readonly ILogger _logger;
 
-        public WeatherHistoryService(AppDbContext context, ILogger logger)
+        public WeatherHistorySaverService(AppDbContext context, ILogger logger)
         {
             _context = context;
             _logger = logger;
