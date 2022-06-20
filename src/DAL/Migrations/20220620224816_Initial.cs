@@ -1,6 +1,8 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
+#nullable disable
+
 namespace DAL.Migrations
 {
     public partial class Initial : Migration
@@ -11,13 +13,13 @@ namespace DAL.Migrations
                 name: "WeatherHistory",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    CityName = table.Column<string>(nullable: true),
-                    CityTemp = table.Column<double>(nullable: false),
-                    IsSuccess = table.Column<bool>(nullable: false),
-                    ErrorMessage = table.Column<string>(nullable: true),
-                    DateTime = table.Column<DateTime>(nullable: false)
+                    CityName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CityTemp = table.Column<double>(type: "float", nullable: false),
+                    IsSuccess = table.Column<bool>(type: "bit", nullable: false),
+                    ErrorMessage = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    DateTime = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
