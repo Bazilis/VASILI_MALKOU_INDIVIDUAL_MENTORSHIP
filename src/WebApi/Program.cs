@@ -8,7 +8,6 @@ using Hangfire;
 using Hangfire.SqlServer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -18,6 +17,10 @@ using Serilog;
 using System;
 using System.IO;
 using System.Reflection;
+using IdentityServer4.AccessTokenValidation;
+using Microsoft.OpenApi.Models;
+using System.Collections.Generic;
+using System.Security.Claims;
 
 namespace WebApi
 {
@@ -40,10 +43,68 @@ namespace WebApi
             builder.Services.AddLogging(loggingBuilder => loggingBuilder.AddSerilog(logger));
             builder.Services.AddSingleton(Log.Logger);
 
+            builder.Services.AddAuthentication(options =>
+            {
+                options.DefaultScheme = IdentityServerAuthenticationDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = IdentityServerAuthenticationDefaults.AuthenticationScheme;
+                options.DefaultAuthenticateScheme = IdentityServerAuthenticationDefaults.AuthenticationScheme;
+            })
+                    .AddIdentityServerAuthentication(options =>
+                    {
+                        options.Authority = "https://localhost:7299";
+                        options.ApiName = "webapi";
+                    });
+
+            builder.Services.AddAuthorization(options =>
+            {
+                options.AddPolicy("User", builder =>
+                {
+                    builder.RequireClaim(ClaimTypes.Role, "User");
+                });
+            });
+
             builder.Services.AddControllers();
 
             builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddSwaggerGen();
+            builder.Services.AddSwaggerGen(options =>
+            {
+                options.SwaggerDoc("v1", new OpenApiInfo { Title = "Protected API", Version = "v1" });
+
+                options.AddSecurityDefinition("oauth2", new OpenApiSecurityScheme
+                {
+                    Type = SecuritySchemeType.OAuth2,
+                    Flows = new OpenApiOAuthFlows
+                    {
+                        AuthorizationCode = new OpenApiOAuthFlow
+                        {
+                            AuthorizationUrl = new Uri("https://localhost:7299/connect/authorize"),
+                            TokenUrl = new Uri("https://localhost:7299/connect/token"),
+                            Scopes = new Dictionary<string, string>
+                            {
+                                {"webapi", "Full access to API"}
+                            }
+                        }
+                    }
+                });
+
+                options.AddSecurityRequirement(new OpenApiSecurityRequirement
+                {
+                    {
+                        new OpenApiSecurityScheme
+                        {
+                            Reference = new OpenApiReference
+                            {
+                                Type = ReferenceType.SecurityScheme,
+                                Id = "oauth2"
+                            },
+                            Scheme = "oauth2",
+                            Name = "Bearer",
+                            In = ParameterLocation.Header
+                        },
+                        new List<string>()
+                    }
+                });
+            });
 
             var connectionString = builder.Configuration["ConnectionStrings:DefaultConnection"];
             builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(connectionString));
@@ -84,11 +145,20 @@ namespace WebApi
             if (app.Environment.IsDevelopment())
             {
                 app.UseSwagger();
-                app.UseSwaggerUI();
+                app.UseSwaggerUI(options =>
+                {
+                    options.SwaggerEndpoint("/swagger/v1/swagger.json", "WebApi V1");
+
+                    options.OAuthClientId("a434fca7-d0d5-45fd-b9e0-aa5c7d9a441f");
+                    options.OAuthAppName("WebApi - Swagger");
+                    options.OAuthUsePkce();
+                });
                 app.UseDeveloperExceptionPage();
             }
 
             app.UseHttpsRedirection();
+
+            app.UseAuthentication();
 
             app.UseAuthorization();
 
