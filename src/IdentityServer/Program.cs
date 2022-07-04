@@ -1,14 +1,28 @@
-using IdentityServerHost.Quickstart.UI;
+﻿using IdentityModel;
+using IdentityServer.Data;
+using IdentityServer.Models;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace IdentityServer
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static void Main()
         {
-            var builder = WebApplication.CreateBuilder(args);
+            var builder = WebApplication.CreateBuilder();
 
             builder.Services.AddControllersWithViews();
+
+            builder.Services.AddDbContext<ApplicationDbContext>(options =>
+                options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+            builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
+                .AddEntityFrameworkStores<ApplicationDbContext>()
+                .AddDefaultTokenProviders();
 
             builder.Services.AddIdentityServer(options =>
             {
@@ -17,12 +31,24 @@ namespace IdentityServer
                 options.Events.RaiseFailureEvents = true;
                 options.Events.RaiseSuccessEvents = true;
             })
-                .AddTestUsers(TestUsers.Users)
+                .AddAspNetIdentity<ApplicationUser>()
                 .AddInMemoryIdentityResources(Config.IdentityResources)
                 .AddInMemoryApiScopes(Config.ApiScopes)
                 .AddInMemoryApiResources(Config.ApiResources)
                 .AddInMemoryClients(Config.Clients)
                 .AddDeveloperSigningCredential();
+
+            builder.Services.AddAuthentication();
+
+            builder.Services.AddAuthorization(options =>
+            {
+                options.AddPolicy("Admin", builder =>
+                {
+                    builder.RequireClaim(JwtClaimTypes.Role, "Admin");
+                });
+            });
+
+            SeedData.EnsureSeedData(builder.Configuration.GetConnectionString("DefaultConnection"));
 
             // Add services to the container.
             builder.Services.AddRazorPages();

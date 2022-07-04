@@ -21,6 +21,7 @@ using IdentityServer4.AccessTokenValidation;
 using Microsoft.OpenApi.Models;
 using System.Collections.Generic;
 using System.Security.Claims;
+using IdentityModel;
 
 namespace WebApi
 {
@@ -59,7 +60,7 @@ namespace WebApi
             {
                 options.AddPolicy("User", builder =>
                 {
-                    builder.RequireClaim(ClaimTypes.Role, "User");
+                    builder.RequireClaim(JwtClaimTypes.Role, "User");
                 });
             });
 
