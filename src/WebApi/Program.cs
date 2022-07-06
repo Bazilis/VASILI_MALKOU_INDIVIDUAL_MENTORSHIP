@@ -120,6 +120,7 @@ namespace WebApi
             builder.Services.AddScoped<IWeatherForecast, WeatherForecastService>();
             builder.Services.AddScoped<IWeatherHistorySaver, WeatherHistorySaverService>();
             builder.Services.AddScoped<IWeatherHistoryReader, WeatherHistoryReaderService>();
+            builder.Services.AddScoped<IWeatherStatisticalReport, WeatherStatisticalReportService>();
 
             // Add Hangfire services.
             builder.Services.AddHangfire(configuration => configuration
