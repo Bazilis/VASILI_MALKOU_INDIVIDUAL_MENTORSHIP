@@ -1,10 +1,12 @@
 ﻿using BLL.Dto;
 using BLL.Interfaces;
 using FluentValidation;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebApi.Controllers
 {
+    [Authorize(Policy = "User")]
     [ApiController]
     [Route("api/[controller]")]
     public class CurrentWeatherController : ControllerBase

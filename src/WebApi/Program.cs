@@ -21,6 +21,7 @@ using IdentityServer4.AccessTokenValidation;
 using Microsoft.OpenApi.Models;
 using System.Collections.Generic;
 using System.Security.Claims;
+using IdentityModel;
 
 namespace WebApi
 {
@@ -59,7 +60,7 @@ namespace WebApi
             {
                 options.AddPolicy("User", builder =>
                 {
-                    builder.RequireClaim(ClaimTypes.Role, "User");
+                    builder.RequireClaim(JwtClaimTypes.Role, "User");
                 });
             });
 
@@ -119,6 +120,7 @@ namespace WebApi
             builder.Services.AddScoped<IWeatherForecast, WeatherForecastService>();
             builder.Services.AddScoped<IWeatherHistorySaver, WeatherHistorySaverService>();
             builder.Services.AddScoped<IWeatherHistoryReader, WeatherHistoryReaderService>();
+            builder.Services.AddScoped<IWeatherStatisticalReport, WeatherStatisticalReportService>();
 
             // Add Hangfire services.
             builder.Services.AddHangfire(configuration => configuration

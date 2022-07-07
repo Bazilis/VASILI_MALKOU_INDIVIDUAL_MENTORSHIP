@@ -1,4 +1,5 @@
-﻿using IdentityServer4.Models;
+﻿using IdentityModel;
+using IdentityServer4.Models;
 using System.Collections.Generic;
 
 namespace IdentityServer
@@ -21,11 +22,14 @@ namespace IdentityServer
         public static IEnumerable<ApiResource> ApiResources =>
             new[]
             {
-                new ApiResource("webapi", "WebApi") {Scopes = {"webapi"}}
+                new ApiResource("webapi", "WebApi", new[] {JwtClaimTypes.Role})
+                {
+                    Scopes = {"webapi"}
+                }
             };
 
         public static IEnumerable<Client> Clients =>
-            new[]
+            new Client[]
             {
                 new Client
                 {

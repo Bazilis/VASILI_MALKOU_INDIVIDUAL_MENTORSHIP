@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace BLL.Dto
+﻿namespace BLL.Dto
 {
     internal class WeatherForecastApiResponseDto
     {
