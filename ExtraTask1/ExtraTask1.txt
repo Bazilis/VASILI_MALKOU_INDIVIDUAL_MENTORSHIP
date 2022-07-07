@@ -1,0 +1,38 @@
+There is a dictionary (case insensitive) containing letters of the English alphabet as keys.
+Each element of the dictionary has a value in the form of a linked list (LinkedList).
+Every linked list contains last names beginning with key characters.
+Users have a queue with last names as an input. The last name starts with any case.
+You need to take each last name from the input queue and add it to the corresponding linked list based on the first character of the last name.
+
+Example:
+
+Input:
+"Johnson", "Williams", "Brown", "Janes"
+
+Output:
+a:
+b: "Brown"
+c:
+d:
+e:
+f:
+g:
+h:
+i:
+j: "Janes", "Johnson"
+k:
+l:
+m:
+n:
+o:
+p:
+q:
+r:
+s:
+t:
+u:
+v:
+w: "Williams"
+x:
+y:
+z:
