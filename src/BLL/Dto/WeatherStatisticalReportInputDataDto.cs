@@ -7,6 +7,8 @@
         public string CitiesString { get; set; }
 
         public TimePeriodValues TimePeriod { get; set; }
+
+        public bool IsUseRabbitmq { get; set; }
     }
 
     public enum TimePeriodValues

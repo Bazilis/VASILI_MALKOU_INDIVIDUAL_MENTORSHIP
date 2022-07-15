@@ -20,7 +20,6 @@ using System.Reflection;
 using IdentityServer4.AccessTokenValidation;
 using Microsoft.OpenApi.Models;
 using System.Collections.Generic;
-using System.Security.Claims;
 using IdentityModel;
 
 namespace WebApi
@@ -61,6 +60,10 @@ namespace WebApi
                 options.AddPolicy("User", builder =>
                 {
                     builder.RequireClaim(JwtClaimTypes.Role, "User");
+                });
+                options.AddPolicy("Admin", builder =>
+                {
+                    builder.RequireClaim(JwtClaimTypes.Role, "Admin");
                 });
             });
 
@@ -121,6 +124,11 @@ namespace WebApi
             builder.Services.AddScoped<IWeatherHistorySaver, WeatherHistorySaverService>();
             builder.Services.AddScoped<IWeatherHistoryReader, WeatherHistoryReaderService>();
             builder.Services.AddScoped<IWeatherStatisticalReport, WeatherStatisticalReportService>();
+
+            builder.Services.AddScoped<IRabbitmqProducer, RabbitmqProducerService>();
+            builder.Services.AddScoped<IRabbitmqConsumer, RabbitmqConsumerService>();
+            builder.Services.AddScoped<IEmailSender, EmailSenderService>();
+            builder.Services.AddScoped<ISubscribeUser, SubscribeUserService>();
 
             // Add Hangfire services.
             builder.Services.AddHangfire(configuration => configuration

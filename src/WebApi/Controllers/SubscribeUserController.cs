@@ -2,6 +2,7 @@
 using BLL.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 
 namespace WebApi.Controllers
 {
@@ -10,17 +11,17 @@ namespace WebApi.Controllers
     [ApiController]
     public class SubscribeUserController : ControllerBase
     {
-        private readonly IWeatherStatisticalReport _weatherStatisticalReport;
+        private readonly ISubscribeUser _subscribeUser;
 
-        public SubscribeUserController(IWeatherStatisticalReport weatherStatisticalReport)
+        public SubscribeUserController(ISubscribeUser subscribeUser)
         {
-            _weatherStatisticalReport = weatherStatisticalReport;
+            _subscribeUser = subscribeUser;
         }
 
         [HttpGet]
-        public IActionResult SubscribeUser([FromQuery] WeatherStatisticalReportInputDataDto inputData)
+        public async Task<IActionResult> SubscribeUser([FromQuery] WeatherStatisticalReportInputDataDto inputData)
         {
-            return Ok(_weatherStatisticalReport.GetWeatherStatisticalReport(inputData.CitiesString, inputData.TimePeriod));
+            return Ok(_subscribeUser.SubscribeUserByUserId(inputData));
         }
     }
 }
