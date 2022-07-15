@@ -19,13 +19,13 @@ namespace BLL.Services
             _statisticalReport = statisticalReport;
         }
 
-        public string SubscribeUserByUserId(WeatherStatisticalReportInputDataDto inputData)
+        public string SubscribeUserByUserId(WeatherStatisticalReportInputDataDto inputData, bool isUseRabbitmq)
         {
             var emailSubject = $"Statistical report at {DateTime.Now}";
 
             var statisticalReportString = _statisticalReport.GetWeatherStatisticalReport(inputData.CitiesString, inputData.TimePeriod);
 
-            var result = _emailSender.SendEmail(GetUserEmail(inputData.UserGuid), emailSubject, statisticalReportString, inputData.IsUseRabbitmq);
+            var result = _emailSender.SendEmail(GetUserEmail(inputData.UserGuid), emailSubject, statisticalReportString, isUseRabbitmq);
 
             if (!result.Item1)
                 return result.Item2;
@@ -39,18 +39,18 @@ namespace BLL.Services
                 _ => throw new ArgumentException(nameof(inputData.TimePeriod)),
             };
 
-            RecurringJob.AddOrUpdate($"Subscribe user job", () => SubscribeUserJob(inputData), $"{timePeriod}");
+            RecurringJob.AddOrUpdate($"Subscribe user job", () => SubscribeUserJob(inputData, isUseRabbitmq), $"{timePeriod}");
 
             return $"User with UserId {inputData.UserGuid} subscribed to weather forecast statistical email reports every {inputData.TimePeriod}";
         }
 
-        private void SubscribeUserJob(WeatherStatisticalReportInputDataDto inputData)
+        private void SubscribeUserJob(WeatherStatisticalReportInputDataDto inputData, bool isUseRabbitmq)
         {
             var emailSubject = $"Statistical report at {DateTime.Now}";
 
             var statisticalReportString = _statisticalReport.GetWeatherStatisticalReport(inputData.CitiesString, inputData.TimePeriod);
 
-            _ = _emailSender.SendEmail(GetUserEmail(inputData.UserGuid), emailSubject, statisticalReportString, inputData.IsUseRabbitmq);
+            _ = _emailSender.SendEmail(GetUserEmail(inputData.UserGuid), emailSubject, statisticalReportString, isUseRabbitmq);
         }
 
         private string GetUserEmail(string userGuid)

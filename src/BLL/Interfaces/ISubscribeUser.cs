@@ -4,6 +4,6 @@ namespace BLL.Interfaces
 {
     public interface ISubscribeUser
     {
-        string SubscribeUserByUserId(WeatherStatisticalReportInputDataDto inputData);
+        string SubscribeUserByUserId(WeatherStatisticalReportInputDataDto inputData, bool isUseRabbitmq);
     }
 }
