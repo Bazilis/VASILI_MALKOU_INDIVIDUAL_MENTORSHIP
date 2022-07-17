@@ -8,17 +8,28 @@ using System.Net;
 
 namespace BLL.Services
 {
-    public class SubscribeUserService
+    public class SubscribeUserService : ISubscribeUser
     {
+        private readonly IEmailSender _emailSender;
         private readonly IWeatherStatisticalReport _statisticalReport;
 
-        public SubscribeUserService(IWeatherStatisticalReport statisticalReport)
+        public SubscribeUserService(IEmailSender emailSender, IWeatherStatisticalReport statisticalReport)
         {
+            _emailSender = emailSender;
             _statisticalReport = statisticalReport;
         }
 
-        public void SubscribeUserByUserId(WeatherStatisticalReportInputDataDto inputData)
+        public string SubscribeUserByUserId(WeatherStatisticalReportInputDataDto inputData, bool isUseRabbitmq)
         {
+            var emailSubject = $"Statistical report at {DateTime.Now}";
+
+            var statisticalReportString = _statisticalReport.GetWeatherStatisticalReport(inputData.CitiesString, inputData.TimePeriod);
+
+            var result = _emailSender.SendEmail(GetUserEmail(inputData.UserGuid), emailSubject, statisticalReportString, isUseRabbitmq);
+
+            if (!result.Item1)
+                return result.Item2;
+
             var timePeriod = (int)inputData.TimePeriod switch
             {
                 1 => "0 * * * *",
@@ -28,14 +39,18 @@ namespace BLL.Services
                 _ => throw new ArgumentException(nameof(inputData.TimePeriod)),
             };
 
-            RecurringJob.AddOrUpdate($"Subscribe user job", () => SubscribeUserJob(inputData), $"{timePeriod}");
+            RecurringJob.AddOrUpdate($"Subscribe user job", () => SubscribeUserJob(inputData, isUseRabbitmq), $"{timePeriod}");
+
+            return $"User with UserId {inputData.UserGuid} subscribed to weather forecast statistical email reports every {inputData.TimePeriod}";
         }
 
-        private void SubscribeUserJob(WeatherStatisticalReportInputDataDto inputData)
+        private void SubscribeUserJob(WeatherStatisticalReportInputDataDto inputData, bool isUseRabbitmq)
         {
+            var emailSubject = $"Statistical report at {DateTime.Now}";
+
             var statisticalReportString = _statisticalReport.GetWeatherStatisticalReport(inputData.CitiesString, inputData.TimePeriod);
 
-            //SendEmail(GetUserEmail(inputData.UserGuid), statisticalReportString);
+            _ = _emailSender.SendEmail(GetUserEmail(inputData.UserGuid), emailSubject, statisticalReportString, isUseRabbitmq);
         }
 
         private string GetUserEmail(string userGuid)

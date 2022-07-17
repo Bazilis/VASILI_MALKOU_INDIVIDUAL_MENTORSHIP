@@ -2,25 +2,31 @@
 using BLL.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
+using System;
 
 namespace WebApi.Controllers
 {
-    [Authorize(Policy = "Admin")]
+    //[Authorize(Policy = "Admin")]
     [Route("api/[controller]")]
     [ApiController]
     public class SubscribeUserController : ControllerBase
     {
-        private readonly IWeatherStatisticalReport _weatherStatisticalReport;
+        private readonly IConfiguration _configuration;
+        private readonly ISubscribeUser _subscribeUser;
 
-        public SubscribeUserController(IWeatherStatisticalReport weatherStatisticalReport)
+        public SubscribeUserController(IConfiguration configuration, ISubscribeUser subscribeUser)
         {
-            _weatherStatisticalReport = weatherStatisticalReport;
+            _configuration = configuration;
+            _subscribeUser = subscribeUser;
         }
 
         [HttpGet]
         public IActionResult SubscribeUser([FromQuery] WeatherStatisticalReportInputDataDto inputData)
         {
-            return Ok(_weatherStatisticalReport.GetWeatherStatisticalReport(inputData.CitiesString, inputData.TimePeriod));
+            var isUseRabbitmq = Convert.ToBoolean(_configuration["IsUseRabbitmq"]);
+
+            return Ok(_subscribeUser.SubscribeUserByUserId(inputData, isUseRabbitmq));
         }
     }
 }
