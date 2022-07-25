@@ -10,12 +10,13 @@ WORKDIR /src
 COPY ["WebApi/WebApi.csproj", "WebApi/"]
 COPY ["BLL/BLL.csproj", "BLL/"]
 COPY ["DAL/DAL.csproj", "DAL/"]
-RUN dotnet restore "WeatherForecast.sln"
+RUN dotnet restore "WebApi/WebApi.csproj"
 COPY . .
-RUN dotnet build "WeatherForecast.sln" -c Release -o /app/build
+WORKDIR "/src/WebApi"
+RUN dotnet build "WebApi.csproj" -c Release -o /app/build
 
 FROM build AS publish
-RUN dotnet publish "WeatherForecast.sln" -c Release -o /app/publish
+RUN dotnet publish "WebApi.csproj" -c Release -o /app/publish
 
 FROM base AS final
 WORKDIR /app
