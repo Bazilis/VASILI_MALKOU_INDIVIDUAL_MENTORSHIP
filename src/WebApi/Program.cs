@@ -131,18 +131,20 @@ namespace WebApi
             builder.Services.AddScoped<ISubscribeUser, SubscribeUserService>();
 
             // Add Hangfire services.
-            builder.Services.AddHangfire(configuration => configuration
-                .SetDataCompatibilityLevel(CompatibilityLevel.Version_170)
-                .UseSimpleAssemblyNameTypeSerializer()
-                .UseRecommendedSerializerSettings()
-                .UseSqlServerStorage(builder.Configuration.GetConnectionString("DefaultConnection"), new SqlServerStorageOptions
-                {
-                    CommandBatchMaxTimeout = TimeSpan.FromMinutes(5),
-                    SlidingInvisibilityTimeout = TimeSpan.FromMinutes(5),
-                    QueuePollInterval = TimeSpan.Zero,
-                    UseRecommendedIsolationLevel = true,
-                    DisableGlobalLocks = true
-                }));
+            //builder.Services.AddHangfire(configuration => configuration
+            //    .SetDataCompatibilityLevel(CompatibilityLevel.Version_170)
+            //    .UseSimpleAssemblyNameTypeSerializer()
+            //    .UseRecommendedSerializerSettings()
+            //    .UseSqlServerStorage(builder.Configuration.GetConnectionString("DefaultConnection"), new SqlServerStorageOptions
+            //    {
+            //        CommandBatchMaxTimeout = TimeSpan.FromMinutes(5),
+            //        SlidingInvisibilityTimeout = TimeSpan.FromMinutes(5),
+            //        QueuePollInterval = TimeSpan.Zero,
+            //        UseRecommendedIsolationLevel = true,
+            //        DisableGlobalLocks = true
+            //    }));
+
+            builder.Services.AddHangfire(x => x.UseSqlServerStorage(connectionString));
 
             // Add the processing server as IHostedService
             builder.Services.AddHangfireServer();
