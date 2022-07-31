@@ -1,0 +1,25 @@
+There are 2 files, the first line in first file contains numbers separated by commas (at least 10 numbers), and the second line contains a mathematical operation (+, -, *, /) that must be performed on all numbers.
+The second file is similar in structure to the first.
+You don't need to check the file structure.
+You have to develop a console application in which compare the speed of reading and calculation information from files by asynchronous and multi-threaded methods.
+
+
+Example:
+
+File 1 Input:
+1,2,3,4,5,5,4,3,2,1
++
+
+File 2 Input:
+1,2,3,4,5,5,4,3,2,1
+*
+
+
+Output:
+
+Async method time => 0,2296
+Multi-threaded method time => 4,2197
+Data from file 1 => 1+2+3+4+5+5+4+3+2+1 = 30 (async)
+Data from file 2 => 1*2*3*4*5*5*4*3*2*1 = 14400 (async)
+Data from file 1 => 1+2+3+4+5+5+4+3+2+1 = 30 (multi-threaded)
+Data from file 2 => 1*2*3*4*5*5*4*3*2*1 = 14400 (multi-threaded)
